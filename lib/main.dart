@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'Karte.dart';
+import 'LocationMarker.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,6 +47,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Set<Marker> markers = {};
+  Set<Circle> circles = {};
+
+  void dataVonMarker(){
+    for(LocationMarker m in markers){
+      print("ID: " + m.markerId.toString() + " LatLng: " + m.currentPosition.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +95,12 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {// Navigate to second route when tapped.
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => googleMap()));
+                    MaterialPageRoute(builder: (context) => googleMap(markers: markers,circles: circles,)));
               },
+            ),
+            RaisedButton(
+              child: Text("dataVonMarker"),
+              onPressed: dataVonMarker,
             ),
           ],
         ),
