@@ -5,7 +5,6 @@ import 'LocationMarker.dart';
 
 class LocationMarkerManager extends StatefulWidget {
 
-
   LocationMarker locationMarker;
   Set<Circle> circles = {};
 
@@ -29,8 +28,7 @@ class _LocationMarkerManagerState extends State<LocationMarkerManager> {
       body: ListView(
         children: <Widget>[
           Text("ID:" + widget.locationMarker.markerId.toString()),
-          Text("Erstellt an Postition:" + widget.locationMarker.position.toString()),
-          Text("Aktuelle Postition:" + widget.locationMarker.currentPosition.toString()),
+          Text("Postition:" + widget.locationMarker.position.toString()),
           Text("Kreis ID:" + widget.locationMarker.circle.circleId.toString()),
           Text("Kreis Radius:" + widget.locationMarker.circle.radius.toString()),
           Row(
