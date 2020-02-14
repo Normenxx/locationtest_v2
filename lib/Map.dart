@@ -2,6 +2,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:locationtest_v2/LocationMarkerManager.dart';
+import 'package:locationtest_v2/LocationMarkerPage.dart';
 import 'LocationMarker.dart';
 
 class Map extends StatefulWidget {
@@ -18,46 +19,16 @@ class Map extends StatefulWidget {
 
 class _MapState extends State<Map> {
   LatLng initialPosition = LatLng(47.412395, 9.742799);
-  Set<Polyline> polylines = {};
-  Set<Marker> markers;
   Set<Circle> circles;
 
   Position userCurrentPostion;
 
   _MapState(Set<Marker> markers, Set<Circle> circles) {
-    this.markers = markers;
-    this.circles = circles;
-  }
-
-  void recreateMarkers(Set<Marker> markers){
-    Set<Marker> newMarkers = {};
-    for(LocationMarker m in markers){
-      LocationMarker newMarker = createLocationMarker(m.position);
-      newMarkers.add(newMarker);
-    }
-
-    newMarkers;
-  }
-
-  void permissions() async {
-    GeolocationStatus geolocationStatus =
-        await Geolocator().checkGeolocationPermissionStatus();
-    print(geolocationStatus);
-  }
-
-  void position() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    userCurrentPostion = position;
-    print(position);
-  }
-
-  Future<void> moveToPosition() async {
-    CameraUpdate cameraUpdate = CameraUpdate.newLatLng(
-        LatLng(userCurrentPostion.latitude, userCurrentPostion.longitude));
-    googleMapController.moveCamera(cameraUpdate);
+    recreateMarkers(LocationMarkerManager.markers);
   }
 
   LocationMarker createLocationMarker(LatLng initalPostion){
+    //Factory Methode
     counter++;
     LocationMarker marker;
     marker = new LocationMarker(
@@ -71,7 +42,7 @@ class _MapState extends State<Map> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LocationMarkerManager(
+              builder: (context) => LocationMarkerPage(
                 locationMarker: marker,
                 circles: circles,
               ),
@@ -81,38 +52,57 @@ class _MapState extends State<Map> {
     return marker;
   }
 
-  void dataVonMarker(){
-    for(LocationMarker m in markers){
-      print("ID: " + m.markerId.toString() + " LatLng: " + m.position.toString() + "kreis:" + m.circle.circleId.toString());
-      if(m is LocationMarker)
-        print("Ist ein LocationMarker");
-
-      if(m is Marker)
-        print("Ist ein Marker");
-
-      if(m.onDragEnd == null){
-        print("Function ist null");
-      }
-    }
-  }
-
   void locationMarkerOnDragEnd(LatLng latLng, LocationMarker oldMarker) {
-    //Erstellen eines neuen Markers
+    //Hilfsmethode für die Factory Methode
     LocationMarker marker = createLocationMarker(latLng);
 
-    /*
-    Problem hier
-    Beschreibung: Wenn man einen Marker auf Google Map setzt zurück geht und wieder zurück geht wird alles in setstate() nicht mehr ausgeführt.
-    Beim ersten mal geht das setstate() jedoch
-     */
     setState(() {
-      print("SetState");
       circles.remove(oldMarker.circle);
-      markers.remove(oldMarker);
+      LocationMarkerManager.markers.remove(oldMarker);
 
       circles.add(marker.circle);
-      markers.add(marker);
+      LocationMarkerManager.markers.add(marker);
     });
+  }
+
+  void recreateMarkers(Set<Marker> markers){
+    //Löst das Problem von locationMarkerOnDragEnd mit setState
+    //Erstellt die Marker neu
+
+    if(markers == null){
+      markers = {};
+    }
+
+    circles = {};
+
+    Set<Marker> newMarkers = {};
+    for(LocationMarker m in markers){
+      LocationMarker newMarker = createLocationMarker(m.position);
+      newMarkers.add(newMarker);
+      circles.add(newMarker.circle);
+    }
+    LocationMarkerManager.markers = newMarkers;
+  }
+
+  void permissions() async {
+    //Debug Methode
+    //Gibt an ob man Rechte für die Location hat
+    GeolocationStatus geolocationStatus = await Geolocator().checkGeolocationPermissionStatus();
+    print(geolocationStatus);
+  }
+
+  void position() async {
+    //Debug Methode
+    //Gibt die Momentanige Position an
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print(position);
+  }
+
+  Future<void> moveToPosition() async {
+    //Debug Methode
+    //Verschiebt die Kamera zu einer neuen position
+    CameraUpdate cameraUpdate = CameraUpdate.newLatLng(initialPosition);
+    googleMapController.moveCamera(cameraUpdate);
   }
 
   GoogleMapController googleMapController;
@@ -129,8 +119,7 @@ class _MapState extends State<Map> {
             initialCameraPosition:
                 CameraPosition(target: initialPosition, zoom: 10),
             mapType: MapType.terrain,
-            polylines: polylines,
-            markers: markers,
+            markers: LocationMarkerManager.markers,
             circles: circles,
             onMapCreated: (GoogleMapController googleMapController) {
               this.googleMapController = googleMapController;
@@ -143,7 +132,7 @@ class _MapState extends State<Map> {
                 onPressed: () {
                   LocationMarker marker = createLocationMarker(LatLng(47.412395, 9.742799));
                   setState(() {
-                    markers.add(marker);
+                    LocationMarkerManager.markers.add(marker);
                     circles.add(marker.circle);
                   });
                 },
@@ -155,13 +144,15 @@ class _MapState extends State<Map> {
 
                   LocationMarker marker = createLocationMarker(LatLng(userCurrentPostion.latitude,userCurrentPostion.longitude));
                   setState(() {
-                    markers.add(marker);
+                    LocationMarkerManager.markers.add(marker);
                   });
                 },
               ),
               RaisedButton(
-                child: Text("dataVonMarker"),
-                onPressed: dataVonMarker,
+                child: Text("(Debug) dataVonMarker"),
+                onPressed: (){
+                  LocationMarkerManager.dataVonMarker();
+                },
               ),
             ],
             shrinkWrap: true,

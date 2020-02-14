@@ -28,24 +28,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Set<Marker> markers = {};
-  Set<Circle> circles = {};
-
-  void dataVonMarker(){
-    for(LocationMarker m in markers){
-      print("ID: " + m.markerId.toString() + " LatLng: " + m.position.toString() + "kreis:" + m.circle.circleId.toString());
-      if(m is LocationMarker)
-        print("Ist ein LocationMarker");
-
-      if(m is Marker)
-        print("Ist ein Marker");
-
-      if(m.onDragEnd == null){
-        print("Function ist null");
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {// Navigate to second route when tapped.
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Map(markers: markers,circles: circles,)));
+                    MaterialPageRoute(builder: (context) => Map()));
               },
             ),
             RaisedButton(
@@ -69,13 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {// Navigate to second route when tapped.
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Attendance(markers: markers,)));
-              },
-            ),
-            RaisedButton(
-              child: Text('Test'),
-              onPressed: () {// Navigate to second route when tapped.
-                dataVonMarker();
+                    MaterialPageRoute(builder: (context) => Attendance()));
               },
             ),
           ],

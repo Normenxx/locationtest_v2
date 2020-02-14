@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:locationtest_v2/LocationMarkerManager.dart';
 
 import 'LocationMarker.dart';
 
 class Attendance  extends StatefulWidget {
-  Attendance({this.markers});
-  Set<Marker> markers;
-
   @override
   State<StatefulWidget> createState() {
-    return _AttendanceState(markers);
+    return _AttendanceState();
   }
-
 }
 
 class _AttendanceState extends State<Attendance> {
   Position userCurrentPostion;
-  Set<Marker> markers;
 
   Marker markerOfUser;
   bool atLocation = false;
-
-  _AttendanceState(Set<Marker> markers){
-    this.markers = markers;
-  }
 
   void position() async {
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -37,7 +29,7 @@ class _AttendanceState extends State<Attendance> {
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     userCurrentPostion = position;
 
-    for (LocationMarker marker in markers) {
+    for (LocationMarker marker in LocationMarkerManager.markers) {
       distanceInMeters = await Geolocator().distanceBetween
         (
           userCurrentPostion.latitude,

@@ -1,76 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'LocationMarker.dart';
 
-class LocationMarkerManager extends StatefulWidget {
+class LocationMarkerManager {
+  static  Set<Marker> markers;
 
-  LocationMarker locationMarker;
-  Set<Circle> circles = {};
+  static void dataVonMarker(){
+    //Debug Methode
+    //Gibt daten über alle Locationmarker wieder
 
-  LocationMarkerManager({LocationMarker locationMarker,  Set<Circle> circles}){
-    this.locationMarker = locationMarker;
-    this.circles = circles;
+    for(LocationMarker m in LocationMarkerManager.markers){
+      print("ID: " + m.markerId.toString() + " LatLng: " + m.position.toString() + "kreis:" + m.circle.circleId.toString());
+    }
   }
 
-  @override
-  _LocationMarkerManagerState createState() => _LocationMarkerManagerState();
-}
 
-class _LocationMarkerManagerState extends State<LocationMarkerManager> {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Location Marker'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          Text("ID:" + widget.locationMarker.markerId.toString()),
-          Text("Postition:" + widget.locationMarker.position.toString()),
-          Text("Kreis ID:" + widget.locationMarker.circle.circleId.toString()),
-          Text("Kreis Radius:" + widget.locationMarker.circle.radius.toString()),
-          Row(
-            children: <Widget>[
-              RaisedButton(
-                 child: Text("+"),
-                onPressed: (){
-                   setState(() {
-
-                     Circle oldCircle = widget.locationMarker.circle;
-                     double newRadius = oldCircle.radius + 10;
-
-                     Circle newCircle = oldCircle.copyWith(radiusParam: newRadius);
-
-                     widget.locationMarker.circle = newCircle;
-                     widget.circles.remove(oldCircle);
-                     widget.circles.add(newCircle);
-                   });
-                },
-              ),
-              RaisedButton(
-                child: Text("-"),
-                onPressed: (){
-                  setState(() {
-                    Circle oldCircle = widget.locationMarker.circle;
-                    double newRadius = oldCircle.radius - 10;
-
-                    if(newRadius < 0){
-                      newRadius = 0;
-                    }
-                    Circle newCircle = oldCircle.copyWith(radiusParam: newRadius);
-
-                    widget.locationMarker.circle = newCircle;
-                    widget.circles.remove(oldCircle);
-                    widget.circles.add(newCircle);
-                  });
-                },
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
 }
