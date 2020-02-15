@@ -22,7 +22,7 @@ class _MapState extends State<Map> {
     recreateMarkers(MapObjectManager.markers);
   }
 
-  LocationMarker createLocationMarker(LatLng initalPostion){
+  LocationMarker createLocationMarker(LatLng initalPostion,){
     //Factory Methode
     counter++;
     LocationMarker marker;
@@ -72,6 +72,7 @@ class _MapState extends State<Map> {
     Set<Marker> newMarkers = {};
     for(LocationMarker m in markers){
       LocationMarker newMarker = createLocationMarker(m.position);
+      newMarker.circle = m.circle;
       newMarkers.add(newMarker);
       MapObjectManager.circles.add(newMarker.circle);
     }
