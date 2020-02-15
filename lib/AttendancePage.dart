@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:locationtest_v2/LocationMarkerManager.dart';
+import 'package:locationtest_v2/MapObjectManager.dart';
 
 import 'LocationMarker.dart';
 
@@ -29,7 +29,7 @@ class _AttendanceState extends State<Attendance> {
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     userCurrentPostion = position;
 
-    for (LocationMarker marker in LocationMarkerManager.markers) {
+    for (LocationMarker marker in MapObjectManager.markers) {
       distanceInMeters = await Geolocator().distanceBetween
         (
           userCurrentPostion.latitude,

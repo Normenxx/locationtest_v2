@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'LocationMarker.dart';
+import 'MapObjectManager.dart';
 
 class LocationMarkerPage extends StatefulWidget {
 
   LocationMarker locationMarker;
-  Set<Circle> circles = {};
 
-  LocationMarkerPage({LocationMarker locationMarker,  Set<Circle> circles}){
+  LocationMarkerPage({LocationMarker locationMarker}){
     this.locationMarker = locationMarker;
-    this.circles = circles;
   }
 
   @override
@@ -44,8 +43,8 @@ class _LocationMarkerPageState extends State<LocationMarkerPage> {
                      Circle newCircle = oldCircle.copyWith(radiusParam: newRadius);
 
                      widget.locationMarker.circle = newCircle;
-                     widget.circles.remove(oldCircle);
-                     widget.circles.add(newCircle);
+                     MapObjectManager.circles.remove(oldCircle);
+                     MapObjectManager.circles.add(newCircle);
                    });
                 },
               ),
@@ -62,8 +61,8 @@ class _LocationMarkerPageState extends State<LocationMarkerPage> {
                     Circle newCircle = oldCircle.copyWith(radiusParam: newRadius);
 
                     widget.locationMarker.circle = newCircle;
-                    widget.circles.remove(oldCircle);
-                    widget.circles.add(newCircle);
+                    MapObjectManager.circles.remove(oldCircle);
+                    MapObjectManager.circles.add(newCircle);
                   });
                 },
               ),

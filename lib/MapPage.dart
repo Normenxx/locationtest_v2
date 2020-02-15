@@ -1,30 +1,25 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:locationtest_v2/LocationMarkerManager.dart';
+import 'package:locationtest_v2/MapObjectManager.dart';
 import 'package:locationtest_v2/LocationMarkerPage.dart';
 import 'LocationMarker.dart';
 
 class Map extends StatefulWidget {
-  Map({this.markers, this.circles});
-
-  Set<Marker> markers;
-  Set<Circle> circles;
 
   @override
   State<StatefulWidget> createState() {
-    return _MapState(markers, circles);
+    return _MapState();
   }
 }
 
 class _MapState extends State<Map> {
   LatLng initialPosition = LatLng(47.412395, 9.742799);
-  Set<Circle> circles;
 
   Position userCurrentPostion;
 
-  _MapState(Set<Marker> markers, Set<Circle> circles) {
-    recreateMarkers(LocationMarkerManager.markers);
+  _MapState() {
+    recreateMarkers(MapObjectManager.markers);
   }
 
   LocationMarker createLocationMarker(LatLng initalPostion){
@@ -44,7 +39,6 @@ class _MapState extends State<Map> {
             MaterialPageRoute(
               builder: (context) => LocationMarkerPage(
                 locationMarker: marker,
-                circles: circles,
               ),
             ),
           );
@@ -57,11 +51,11 @@ class _MapState extends State<Map> {
     LocationMarker marker = createLocationMarker(latLng);
 
     setState(() {
-      circles.remove(oldMarker.circle);
-      LocationMarkerManager.markers.remove(oldMarker);
+      MapObjectManager.circles.remove(oldMarker.circle);
+      MapObjectManager.markers.remove(oldMarker);
 
-      circles.add(marker.circle);
-      LocationMarkerManager.markers.add(marker);
+      MapObjectManager.circles.add(marker.circle);
+      MapObjectManager.markers.add(marker);
     });
   }
 
@@ -73,15 +67,15 @@ class _MapState extends State<Map> {
       markers = {};
     }
 
-    circles = {};
+    MapObjectManager.circles = {};
 
     Set<Marker> newMarkers = {};
     for(LocationMarker m in markers){
       LocationMarker newMarker = createLocationMarker(m.position);
       newMarkers.add(newMarker);
-      circles.add(newMarker.circle);
+      MapObjectManager.circles.add(newMarker.circle);
     }
-    LocationMarkerManager.markers = newMarkers;
+    MapObjectManager.markers = newMarkers;
   }
 
   void permissions() async {
@@ -119,8 +113,8 @@ class _MapState extends State<Map> {
             initialCameraPosition:
                 CameraPosition(target: initialPosition, zoom: 10),
             mapType: MapType.terrain,
-            markers: LocationMarkerManager.markers,
-            circles: circles,
+            markers: MapObjectManager.markers,
+            circles: MapObjectManager.circles,
             onMapCreated: (GoogleMapController googleMapController) {
               this.googleMapController = googleMapController;
             },
@@ -132,8 +126,8 @@ class _MapState extends State<Map> {
                 onPressed: () {
                   LocationMarker marker = createLocationMarker(LatLng(47.412395, 9.742799));
                   setState(() {
-                    LocationMarkerManager.markers.add(marker);
-                    circles.add(marker.circle);
+                    MapObjectManager.markers.add(marker);
+                    MapObjectManager.circles.add(marker.circle);
                   });
                 },
               ),
@@ -144,14 +138,14 @@ class _MapState extends State<Map> {
 
                   LocationMarker marker = createLocationMarker(LatLng(userCurrentPostion.latitude,userCurrentPostion.longitude));
                   setState(() {
-                    LocationMarkerManager.markers.add(marker);
+                    MapObjectManager.markers.add(marker);
                   });
                 },
               ),
               RaisedButton(
                 child: Text("(Debug) dataVonMarker"),
                 onPressed: (){
-                  LocationMarkerManager.dataVonMarker();
+                  MapObjectManager.dataVonMarker();
                 },
               ),
             ],
