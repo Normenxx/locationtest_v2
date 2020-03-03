@@ -18,16 +18,21 @@ class _AttendanceState extends State<Attendance> {
   Marker markerOfUser;
   bool atLocation = false;
 
-  void position() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    userCurrentPostion = position;
+
+  _AttendanceState(){
+    updatePosition();
   }
 
-  Future<void> inArea() async {
-    double distanceInMeters;
 
+  void updatePosition() async {
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    userCurrentPostion = position;
+    setState(() {
+      userCurrentPostion = position;
+    });
+  }
+
+  void inArea() async{
+    double distanceInMeters;
 
     for (LocationMarker marker in MapObjectManager.markers) {
       distanceInMeters = await Geolocator().distanceBetween
@@ -54,7 +59,7 @@ class _AttendanceState extends State<Attendance> {
       ),
       body: ListView(
         children: <Widget>[
-          Text("Status: " + atLocation.toString()),
+          Text("Anwesenheitbestätigt: " + atLocation.toString()),
           Text("User Postition: " + userCurrentPostion.toString()),
           if (atLocation) Text("Marker ID : " + markerOfUser.markerId.toString()),
           if (atLocation) Text("Marker Postition : " + markerOfUser.position.toString()),

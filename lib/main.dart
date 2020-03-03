@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locationtest_v2/LocationListPage.dart';
 import 'AttendancePage.dart';
 import 'LocationMarker.dart';
