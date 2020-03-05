@@ -13,10 +13,9 @@ class Attendance  extends StatefulWidget {
 }
 
 class _AttendanceState extends State<Attendance> {
-  Position userCurrentPostion;
-
-  Marker markerOfUser;
-  bool atLocation = false;
+  Position _userCurrentPostion;
+  Marker _markerOfUser;
+  bool _atLocation = false;
 
 
   _AttendanceState(){
@@ -27,7 +26,7 @@ class _AttendanceState extends State<Attendance> {
   void updatePosition() async {
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     setState(() {
-      userCurrentPostion = position;
+      _userCurrentPostion = position;
     });
   }
 
@@ -37,14 +36,14 @@ class _AttendanceState extends State<Attendance> {
     for (LocationMarker marker in MapObjectManager.markers) {
       distanceInMeters = await Geolocator().distanceBetween
         (
-          userCurrentPostion.latitude,
-          userCurrentPostion.longitude,
+          _userCurrentPostion.latitude,
+          _userCurrentPostion.longitude,
           marker.position.latitude,
           marker.position.longitude
         );
       if (distanceInMeters <= marker.circle.radius) {
-        atLocation = true;
-        markerOfUser = marker;
+        _atLocation = true;
+        _markerOfUser = marker;
         break;
       }
     }
@@ -59,10 +58,10 @@ class _AttendanceState extends State<Attendance> {
       ),
       body: ListView(
         children: <Widget>[
-          Text("Anwesenheitbestätigt: " + atLocation.toString()),
-          Text("User Postition: " + userCurrentPostion.toString()),
-          if (atLocation) Text("Marker ID : " + markerOfUser.markerId.toString()),
-          if (atLocation) Text("Marker Postition : " + markerOfUser.position.toString()),
+          Text("Anwesenheitbestätigt: " + _atLocation.toString()),
+          Text("User Postition: " + _userCurrentPostion.toString()),
+          if (_atLocation) Text("Marker ID : " + _markerOfUser.markerId.toString()),
+          if (_atLocation) Text("Marker Postition : " + _markerOfUser.position.toString()),
           RaisedButton(
             child: Text('Anwesenheitbestätigen'),
             onPressed: () {

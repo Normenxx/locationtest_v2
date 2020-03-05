@@ -6,10 +6,10 @@ import 'MapObjectManager.dart';
 
 class LocationMarkerPage extends StatefulWidget {
 
-  LocationMarker locationMarker;
+  LocationMarker _locationMarker;
 
   LocationMarkerPage({LocationMarker locationMarker}){
-    this.locationMarker = locationMarker;
+    this._locationMarker = locationMarker;
   }
 
   @override
@@ -26,10 +26,10 @@ class _LocationMarkerPageState extends State<LocationMarkerPage> {
       ),
       body: ListView(
         children: <Widget>[
-          Text("ID:" + widget.locationMarker.markerId.toString()),
-          Text("Postition:" + widget.locationMarker.position.toString()),
-          Text("Kreis ID:" + widget.locationMarker.circle.circleId.toString()),
-          Text("Kreis Radius:" + widget.locationMarker.circle.radius.toString()),
+          Text("ID:" + widget._locationMarker.markerId.toString()),
+          Text("Postition:" + widget._locationMarker.position.toString()),
+          Text("Kreis ID:" + widget._locationMarker.circle.circleId.toString()),
+          Text("Kreis Radius:" + widget._locationMarker.circle.radius.toString()),
           Row(
             children: <Widget>[
               RaisedButton(
@@ -37,12 +37,12 @@ class _LocationMarkerPageState extends State<LocationMarkerPage> {
                 onPressed: (){
                    setState(() {
 
-                     Circle oldCircle = widget.locationMarker.circle;
+                     Circle oldCircle = widget._locationMarker.circle;
                      double newRadius = oldCircle.radius + 10;
 
                      Circle newCircle = oldCircle.copyWith(radiusParam: newRadius);
 
-                     widget.locationMarker.circle = newCircle;
+                     widget._locationMarker.circle = newCircle;
                      MapObjectManager.circles.remove(oldCircle);
                      MapObjectManager.circles.add(newCircle);
                    });
@@ -52,7 +52,7 @@ class _LocationMarkerPageState extends State<LocationMarkerPage> {
                 child: Text("-"),
                 onPressed: (){
                   setState(() {
-                    Circle oldCircle = widget.locationMarker.circle;
+                    Circle oldCircle = widget._locationMarker.circle;
                     double newRadius = oldCircle.radius - 10;
 
                     if(newRadius < 0){
@@ -60,7 +60,7 @@ class _LocationMarkerPageState extends State<LocationMarkerPage> {
                     }
                     Circle newCircle = oldCircle.copyWith(radiusParam: newRadius);
 
-                    widget.locationMarker.circle = newCircle;
+                    widget._locationMarker.circle = newCircle;
                     MapObjectManager.circles.remove(oldCircle);
                     MapObjectManager.circles.add(newCircle);
                   });

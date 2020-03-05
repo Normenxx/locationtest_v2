@@ -4,8 +4,8 @@ import 'LocationMarker.dart';
 
 
 class MapObjectManager {
-  static  Set<Marker> markers;
-  static  Set<Circle> circles;
+  static  Set<Marker> _markers;
+  static  Set<Circle> _circles;
 
   static void dataVonMarker(){
     //Debug Methode
@@ -15,4 +15,18 @@ class MapObjectManager {
       print("ID: " + m.markerId.toString() + " LatLng: " + m.position.toString() + "kreis:" + m.circle.circleId.toString());
     }
   }
+
+  static Set<Circle> get circles => _circles;
+
+  static set circles(Set<Circle> value) {
+    _circles = value;
+  }
+
+  static Set<Marker> get markers => _markers;
+
+  static set markers(Set<Marker> value) {
+    _markers = value;
+  }
+
+
 }

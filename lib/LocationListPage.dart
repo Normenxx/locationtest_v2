@@ -10,14 +10,14 @@ class LocationListPage  extends StatefulWidget {
 }
 
 class _LocationListPageState extends State<LocationListPage> {
-  List<RaisedButton> markerListe = new List<RaisedButton>();
+  List<RaisedButton> _markerListe = new List<RaisedButton>();
 
   List<Widget> _buildMarkerListe() {
     if(MapObjectManager.markers == null){
       MapObjectManager.markers = {};
     }
     for(LocationMarker m in MapObjectManager.markers){
-      markerListe.add(
+      _markerListe.add(
           new RaisedButton(
               child: Text("Marker" + m.markerId.toString()),
               onPressed:   (){
@@ -29,7 +29,7 @@ class _LocationListPageState extends State<LocationListPage> {
           )
       );
     }
-    return markerListe;
+    return _markerListe;
   }
 
   @override

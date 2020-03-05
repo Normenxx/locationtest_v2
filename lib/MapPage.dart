@@ -14,9 +14,9 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
-  LatLng initialPosition = LatLng(47.412395, 9.742799);
+  LatLng _initialPosition = LatLng(47.412395, 9.742799);
 
-  Position userCurrentPostion;
+  Position _userCurrentPostion;
 
   _MapState() {
     recreateMarkers(MapObjectManager.markers);
@@ -96,7 +96,7 @@ class _MapState extends State<Map> {
   Future<void> moveToPosition() async {
     //Debug Methode
     //Verschiebt die Kamera zu einer neuen position
-    CameraUpdate cameraUpdate = CameraUpdate.newLatLng(initialPosition);
+    CameraUpdate cameraUpdate = CameraUpdate.newLatLng(_initialPosition);
     googleMapController.moveCamera(cameraUpdate);
   }
 
@@ -112,7 +112,7 @@ class _MapState extends State<Map> {
         body: Stack(children: <Widget>[
           GoogleMap(
             initialCameraPosition:
-                CameraPosition(target: initialPosition, zoom: 10),
+                CameraPosition(target: _initialPosition, zoom: 10),
             mapType: MapType.terrain,
             markers: MapObjectManager.markers,
             circles: MapObjectManager.circles,
@@ -137,7 +137,7 @@ class _MapState extends State<Map> {
                 onPressed: () async {
                   await position();
 
-                  LocationMarker marker = createLocationMarker(LatLng(userCurrentPostion.latitude,userCurrentPostion.longitude));
+                  LocationMarker marker = createLocationMarker(LatLng(_userCurrentPostion.latitude,_userCurrentPostion.longitude));
                   setState(() {
                     MapObjectManager.markers.add(marker);
                   });
