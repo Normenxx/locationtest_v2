@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:locationtest_v2/LocationMarkerPage.dart';
-
-import 'LocationMarker.dart';
-import 'MapObjectManager.dart';
+import 'package:locationtest_v2/pages/LocationMarkerPage.dart';
+import 'package:locationtest_v2/utils/model/LocationMarker.dart';
+import 'package:locationtest_v2/utils/model/MapObjectManager.dart';
 
 class LocationListPage  extends StatefulWidget {
   @override

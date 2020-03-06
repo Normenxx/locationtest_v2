@@ -1,9 +1,9 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:locationtest_v2/MapObjectManager.dart';
-import 'package:locationtest_v2/LocationMarkerPage.dart';
-import 'LocationMarker.dart';
+import 'package:locationtest_v2/utils/model/MapObjectManager.dart';
+import 'package:locationtest_v2/utils/model/LocationMarker.dart';
+import 'package:locationtest_v2/pages//LocationMarkerPage.dart';
 
 class Map extends StatefulWidget {
 
@@ -22,7 +22,7 @@ class _MapState extends State<Map> {
     recreateMarkers(MapObjectManager.markers);
   }
 
-  LocationMarker createLocationMarker(LatLng initalPostion,){
+  LocationMarker createLocationMarker(LatLng initalPostion, {double circleradius}){
     //Factory Methode
     counter++;
     LocationMarker marker;
@@ -33,6 +33,7 @@ class _MapState extends State<Map> {
         onDragEnd: (LatLng latLng) {
           locationMarkerOnDragEnd(latLng, marker);
         },
+        circleRadius: circleradius,
         onTap: () {
           Navigator.push(
             context,
@@ -48,7 +49,7 @@ class _MapState extends State<Map> {
 
   void locationMarkerOnDragEnd(LatLng latLng, LocationMarker oldMarker) {
     //Hilfsmethode für die Factory Methode
-    LocationMarker marker = createLocationMarker(latLng);
+    LocationMarker marker = createLocationMarker(latLng,circleradius: oldMarker.circle.radius);
 
     setState(() {
       MapObjectManager.circles.remove(oldMarker.circle);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'LocationMarker.dart';
-import 'MapObjectManager.dart';
+import 'package:locationtest_v2/utils/model/LocationMarker.dart';
+import 'package:locationtest_v2/utils/model/MapObjectManager.dart';
 
 class LocationMarkerPage extends StatefulWidget {
 

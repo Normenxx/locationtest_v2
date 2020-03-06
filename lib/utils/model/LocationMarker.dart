@@ -5,11 +5,16 @@ class LocationMarker extends Marker{
   Circle _circle;
   static int _circleIdCounter = 0;
 
-  LocationMarker({MarkerId markerid,LatLng position = const LatLng(0.0, 0.0), bool draggable = false, ValueChanged<LatLng> onDragEnd,  VoidCallback onTap}) : super(markerId: markerid, position:position,draggable:draggable,onDragEnd: onDragEnd, onTap: onTap) {
+  LocationMarker({MarkerId markerid,LatLng position = const LatLng(0.0, 0.0), bool draggable = false, ValueChanged<LatLng> onDragEnd,  VoidCallback onTap, double circleRadius}) : super(markerId: markerid, position:position,draggable:draggable,onDragEnd: onDragEnd, onTap: onTap) {
     _circleIdCounter++;
+
+    if(circleRadius==null){
+      circleRadius = 100;
+    }
+
     _circle = new Circle(
         circleId: new CircleId(_circleIdCounter.toString()),
-        radius: 100,
+        radius: circleRadius,
         center: this.position,
         fillColor: Colors.red[50],
     );
