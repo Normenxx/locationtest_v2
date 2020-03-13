@@ -97,7 +97,8 @@ class _MapState extends State<Map> {
   Future<void> moveToPosition() async {
     //Debug Methode
     //Verschiebt die Kamera zu einer neuen position
-    CameraUpdate cameraUpdate = CameraUpdate.newLatLng(_initialPosition);
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    CameraUpdate cameraUpdate = CameraUpdate.newLatLng(new LatLng(position.latitude, position.longitude));
     googleMapController.moveCamera(cameraUpdate);
   }
 
@@ -134,20 +135,9 @@ class _MapState extends State<Map> {
                 },
               ),
               RaisedButton(
-                child: Text("(Debug) Add User Location Marker"),
-                onPressed: () async {
-                  await position();
-
-                  LocationMarker marker = createLocationMarker(LatLng(_userCurrentPostion.latitude,_userCurrentPostion.longitude));
-                  setState(() {
-                    MapObjectManager.markers.add(marker);
-                  });
-                },
-              ),
-              RaisedButton(
-                child: Text("(Debug) dataVonMarker"),
-                onPressed: (){
-                  MapObjectManager.dataVonMarker();
+                child: Text("Aktuelle Postition"),
+                onPressed: () {
+                  moveToPosition();
                 },
               ),
             ],
